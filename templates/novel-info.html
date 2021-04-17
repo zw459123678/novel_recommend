@@ -1,0 +1,132 @@
+{% extends 'base-simple.html' %}
+{% load static %}
+
+
+{% block bottom1 %}
+
+
+    <section class="ftco-section bg-light  ftco-slant ftco-slant-white" id="section-features">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-8 text-center mb-5 ftco-animate">
+                    <h2 class="text-uppercase ftco-uppercase">{{ novel.name }}</h2>
+                    <div class="row justify-content-center">
+                      
+                        <div class="col-md-6" style="text-align: right;">
+                            <img src="/novel/get_novel_img/{{ img_title }}/" width="120px" alt="">
+                        </div>
+                        <div class="col-md-6">
+                            <p style="text-align: left;">{{ novel.author }}</p>
+                            <p style="text-align: left;">{{ novel.keywords }}</p>
+                            <button type="button" class="btn btn-primary btn-sm" style="display:none" id="btn-collect">
+                                点击收藏
+                            </button>
+                        </div>
+                    </div>
+                    <div style="margin: 0 auto;">
+                        {{myechart|safe}}
+                    </div>
+                    <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">章节名</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            
+                        {% for chapter in chapters %}
+                          <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="/novel/{{novel.id}}/{{ forloop.counter }}">{{ chapter.title }}</a></td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                </div>
+                <div class="col-md-4 text-center mb-5 ftco-animate">
+                    <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">最热小说</th>
+                            <th scope="col">章阅读量</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            
+                        {% for novel in hot_novels %}
+                          <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="/novel/{{novel.id}}">{{ novel.name }}</a></td>
+                            <td>{{ novel.read_counts }}</td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+
+                      <table class="table">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">最热作者</th>
+                              <th scope="col">总章阅读量</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              
+                          {% for author in hot_author %}
+                            <tr>
+                              <td>{{ forloop.counter }}</td>
+                              <td><a href="/novel/author/{{author.author}}/1/20/">{{ author.author }}</a></td>
+                              <td>{{ author.readSum }}</td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        th {
+            text-align: center;
+        }
+        a {
+            color: black;
+        }
+    </style>
+    <script>
+        $(function() {
+            console.log('rest')
+            const novelId = {{ novel.id }}
+            {% ifequal username None %}
+                $('#btn-collect').css('display', 'none')
+            {% else %}
+                $('#btn-collect').css('display', 'block')
+            {% endifequal %}
+            $.get("/novel/novel_is_collect/{{ novel.id }}/", function(result){
+                console.log(result)
+                if (result.code == 0) {
+                    $('#btn-collect').text('点击收藏')
+                } else {
+                    $('#btn-collect').text('取消收藏')
+                }
+            });
+
+            $('#btn-collect').click(function() {
+                
+            $.get("/novel/novel_change_collect/{{ novel.id }}/", function(result){
+                console.log(result)
+                if (result.code == 0) {
+                    $('#btn-collect').text('点击收藏')
+                } else {
+                    $('#btn-collect').text('取消收藏')
+                }
+            });
+            })
+        })
+    </script>
+
+{% endblock %}

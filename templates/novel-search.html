@@ -1,0 +1,75 @@
+{% extends 'base-simple.html' %}
+{% load static %}
+<!-- 下部介绍栏1 -->
+{% block bottom1 %}
+
+    <section class="ftco-section bg-light  ftco-slant ftco-slant-white" id="section-features">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center mb-5 ftco-animate">
+                    <form class="form" method="post" action="{% url 'home:search' %}">
+                        {% csrf_token %}
+                        
+                        <div class="form-group label-floating">
+                            <select class="form-control" name="type">
+                                <option value="author">按作者搜索</option>
+                                <option value="name">按小说名搜索</option>
+                            </select>
+                        </div>
+                        <div class="form-group label-floating">
+                            <input type="text" placeholder="关键词" class="form-control" name="key"/>
+                        </div>
+                        <input type="hidden" class="form-control" name="page" value=1 />
+                        <input type="hidden" class="form-control" name="page_size" value=200 />
+                        <div class="footer text-center">
+                            <span>{{ error }}</span>
+                            <input type="submit"  class="btn btn-primary btn-round btn-lg btn-block" value="搜索">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center mb-5 ftco-animate">
+                    <h2 class="text-uppercase ftco-uppercase">搜索结果</h2>
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <p class="lead">我们为您搜索到以下小说</p>
+                        </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">小说名</th>
+                                <th scope="col">作者</th>
+                                <th scope="col">关键词</th>
+                                <th scope="col">章阅读数</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                
+                            {% for novel in novels %}
+                              <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="/novel/{{novel.id}}/">{{ novel.name }}</a></td>
+                                <td>{{ novel.author }}</td>
+                                <td>{{ novel.keywords }}</td>
+                                <td>{{ novel.read_counts }}</td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        th {
+            text-align: center;
+        }
+        a {
+            color: black;
+        }
+    </style>
+
+{% endblock %}

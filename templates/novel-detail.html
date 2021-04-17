@@ -1,0 +1,79 @@
+{% extends 'base-simple.html' %}
+{% load static %}
+
+
+{% block bottom1 %}
+
+    <section class="ftco-section bg-light  ftco-slant ftco-slant-white" id="section-features">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12 text-center mb-5 ftco-animate">
+                    <!-- <h2 class="text-uppercase ftco-uppercase">{{ chapter.title }}</h2> -->
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <p class="lead">{{ title }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="media d-block mb-4 text-center ftco-media p-md-5 p-4 ftco-animate">
+                        <div class="mb-3">
+                            <img src="/media/{{ chapter.chapter_img }}" style="width: 100%;" alt=""/>
+                        </div>
+                        <div class="media-body" style="text-align: left; text-indent: 2em;">
+                            <p class="mb-5">{{ chapter.content | safe }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="...">
+                <ul class="pagination justify-content-end">
+                {% if is_prev %}
+                  <li class="page-item">
+                    <a class="page-link" href="/novel/{{ novel_id }}/{{ prev }}">上一章</a>
+                  </li>
+                {% endif %}
+                <li class="page-item">
+                  <a class="page-link" href="/novel/{{ novel_id }}" >目录</a>
+                </li>
+                {% if is_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="/novel/{{ novel_id }}/{{ next }}" >下一章</a>
+                  </li>
+                {% endif %}
+                </ul>
+              </nav>
+        </div>
+    </section>
+    <script>
+        const prev = {{ prev }}
+        const next = {{ next }}
+        $(function() {
+            document.onkeydown = function (event) {
+                event = event || window.event;/*||为或语句，当IE不能识别event时候，就执行window.event 赋值*/
+                console.log(event.keyCode);
+                switch (event.keyCode){/*keyCode:字母和数字键的键码值*/
+                    /*37、38、39、40分别对应左上右下*/
+                    case 37:
+                        if (prev) {
+                            console.log('go left')
+                            window.location = "/novel/{{ novel_id }}/{{ prev }}"
+                        }
+                        break;
+                    case 38:
+                        break;
+                    case 39:
+                        if (next) {
+                            console.log('go right')
+                            window.location = "/novel/{{ novel_id }}/{{ next }}"
+                        }
+                        break;
+                    case 40:
+                        break;
+                }
+            }
+        })
+
+    </script>
+{% endblock %}

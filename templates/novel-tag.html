@@ -1,0 +1,52 @@
+{% extends 'base-simple.html' %}
+{% load static %}
+<!-- 下部介绍栏1 -->
+{% block bottom1 %}
+
+    <section class="ftco-section bg-light  ftco-slant ftco-slant-white" id="section-features">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center mb-5 ftco-animate">
+                    <h2 class="text-uppercase ftco-uppercase">分类榜单 - {{ tag }}</h2>
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <p class="lead">分类榜单,按章阅读量排序</p>
+                        </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">小说名</th>
+                                <th scope="col">作者</th>
+                                <th scope="col">关键词</th>
+                                <th scope="col">章阅读数</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                
+                            {% for novel in novels %}
+                              <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="/novel/{{novel.id}}/">{{ novel.name }}</a></td>
+                                <td>{{ novel.author }}</td>
+                                <td>{{ novel.keywords }}</td>
+                                <td>{{ novel.read_counts }}</td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        th {
+            text-align: center;
+        }
+        a {
+            color: black;
+        }
+    </style>
+
+{% endblock %}

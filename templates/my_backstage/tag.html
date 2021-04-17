@@ -1,0 +1,47 @@
+{% extends 'templates/my_backstage/base.html' %}
+{% load static %}
+
+{% block about_me %}
+<section class="section contact-me" data-section="{% url 'home:my_home' %}">
+    <div class="container">
+        <div class="section-heading">
+            <h2>我的标签</h2>
+            <div class="line-dec"></div>
+        </div>
+        <div class="row">
+            <table class="table table-dark">
+                <thead class="thead-light">
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">关键词</th>
+                    <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for tag in tags %}
+                    <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ tag.keyword }}</td>
+                    <td><button onclick="deleteTag('{{ tag.keyword }}')">删除此喜好标签</button></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+        </div>
+    </div>
+</section>
+<script>
+    $(function() {
+        console.log('ddd')
+    })
+    function deleteTag(key) {
+        $.get(`/novel/tag/${key}/`, function(result){
+            console.log(result)
+            if (result.code == 1) {
+                window.location.reload();
+            } else {
+            }
+        });
+    }
+</script>
+{% endblock %}

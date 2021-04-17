@@ -1,0 +1,11 @@
+Django
+APScheduler
+pymysql
+django-apscheduler
+django-simpleui
+requests-html
+parsel
+pandas
+jieba
+pyecharts
+pillow
